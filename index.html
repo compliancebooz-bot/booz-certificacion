@@ -3,35 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>BOOZ · Módulos de Certificación</title>
+<title>Módulos de Certificación</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#EDEEEC; --surface:#FFFFFF; --ink:#1A1D1F; --ink-soft:#5B6066;
-    --amber:#F5A623; --amber-ink:#4A3300; --green:#0B5D3B; --green-soft:#E4F0EA;
-    --line:#D8DAD6; --radius:14px;
+    --bg:#F4F6F9; --surface:#FFFFFF; --ink:#16202B; --ink-soft:#5B6773;
+    --blue:#1B4F8C; --blue-soft:#E8F0FA;
+    --orange:#E8871E; --orange-soft:#FDEEDD; --orange-ink:#7A4A0A;
+    --green:#157A4A; --green-soft:#E5F5EC;
+    --line:#DCE2E8; --radius:14px;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
     font-family:'IBM Plex Sans',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
   .app{max-width:480px;margin:0 auto;min-height:100vh;}
   .topbar{padding:18px 20px 16px;border-bottom:1px solid var(--line);background:var(--surface);}
-  .brand{font-family:'Oswald',sans-serif;font-weight:700;font-size:15px;letter-spacing:.14em;color:var(--ink);}
-  .brand span{color:var(--amber);}
+  .brand{font-family:'Oswald',sans-serif;font-weight:700;font-size:15px;letter-spacing:.14em;color:var(--blue);}
+  .brand span{color:var(--orange);}
   main{padding:26px 20px 40px;}
   h1{font-family:'Oswald',sans-serif;font-size:26px;line-height:1.1;margin:0 0 6px;font-weight:600;}
   .lede{color:var(--ink-soft);font-size:14.5px;line-height:1.5;margin:0 0 24px;}
   .list{display:flex;flex-direction:column;gap:12px;}
   a.card{display:block;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
     padding:18px 18px;text-decoration:none;color:var(--ink);position:relative;transition:border-color .15s;}
-  a.card:active{border-color:var(--amber);}
+  a.card:active{border-color:var(--blue);}
   .tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.09em;
     padding:3px 8px;border-radius:4px;font-weight:600;margin-bottom:9px;}
-  .tag.safety{background:var(--amber);color:var(--amber-ink);}
+  .tag.safety{background:var(--orange-soft);color:var(--orange-ink);}
   .tag.quality{background:var(--green-soft);color:var(--green);}
-  .tag.onboarding{background:#E7E7E4;color:var(--ink-soft);}
+  .tag.onboarding{background:var(--blue-soft);color:var(--blue);}
   .card-title{font-size:17px;font-weight:600;margin-bottom:3px;}
   .card-sub{font-size:13px;color:var(--ink-soft);}
   .arrow{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--ink-soft);}
@@ -39,7 +41,7 @@
 </head>
 <body>
 <div class="app">
-  <div class="topbar"><div class="brand">BOOZ<span>·</span>CERTIFICACIÓN</div></div>
+  <div class="topbar"><div class="brand" id="brandText">CERTIFICACIÓN</div></div>
   <main>
     <h1>Módulos de Capacitación</h1>
     <p class="lede">Elige un módulo. Cada uno es un video corto y unas preguntas — menos de 2 minutos.</p>
@@ -71,5 +73,11 @@
     </div>
   </main>
 </div>
+<script>
+  // Cambia esto por el nombre de la empresa cuando repliques el sitio
+  const COMPANY_NAME = "BOOZ";
+  document.title = COMPANY_NAME + " · Módulos de Certificación";
+  document.getElementById("brandText").innerHTML = COMPANY_NAME + '<span>·</span>CERTIFICACIÓN';
+</script>
 </body>
 </html>
