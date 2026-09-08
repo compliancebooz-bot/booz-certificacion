@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>BOOZ · Certificación Safety</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root{
+    --bg:#EDEEEC; --surface:#FFFFFF; --ink:#1A1D1F; --ink-soft:#5B6066;
+    --amber:#F5A623; --amber-ink:#4A3300; --green:#0B5D3B; --green-soft:#E4F0EA;
+    --red:#C1272D; --red-soft:#FBE9E9; --line:#D8DAD6; --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:'IBM Plex Sans',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
+  .app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;
+    background:linear-gradient(180deg,var(--bg) 0%,var(--bg) 100%);}
+  .topbar{padding:18px 20px 14px;border-bottom:1px solid var(--line);background:var(--surface);}
+  .brand{font-family:'Oswald',sans-serif;font-weight:700;font-size:15px;letter-spacing:.14em;color:var(--ink);}
+  .brand span{color:var(--amber);}
+  .stepper{display:flex;align-items:center;margin-top:14px;}
+  .step{display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;width:74px;}
+  .dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--line);background:var(--surface);
+    display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;
+    font-size:12px;font-weight:600;color:var(--ink-soft);transition:all .25s ease;}
+  .step span{font-size:10.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;text-align:center;}
+  .step.active .dot{border-color:var(--amber);background:var(--amber);color:var(--amber-ink);}
+  .step.active span{color:var(--ink);font-weight:600;}
+  .step.done .dot{border-color:var(--green);background:var(--green);color:#fff;}
+  .step.done .dot::after{content:"✓";}
+  .track{flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 11px);margin:0 2px 18px;}
+  main{flex:1;padding:26px 20px 40px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.1em;
+    color:var(--amber-ink);background:var(--amber);display:inline-block;padding:3px 9px;border-radius:4px;font-weight:600;}
+  h1{font-family:'Oswald',sans-serif;font-size:30px;line-height:1.08;margin:14px 0 8px;font-weight:600;}
+  .lede{color:var(--ink-soft);font-size:15px;line-height:1.5;margin:0 0 26px;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;}
+  .btn{display:block;width:100%;text-align:center;border:none;border-radius:10px;padding:15px 18px;
+    font-family:'IBM Plex Sans',sans-serif;font-size:16px;font-weight:600;cursor:pointer;
+    transition:transform .12s ease,opacity .2s ease;-webkit-tap-highlight-color:transparent;}
+  .btn:active{transform:scale(.98);}
+  .btn-primary{background:var(--ink);color:#fff;}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);margin-top:10px;}
+  .btn:focus-visible{outline:3px solid var(--amber);outline-offset:2px;}
+  .video-slot{background:#15171A;border-radius:var(--radius);aspect-ratio:9/16;max-height:420px;
+    display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;margin-bottom:16px;}
+  .video-slot iframe,.video-slot video{width:100%;height:100%;border:0;object-fit:cover;}
+  .video-placeholder{color:#8A9098;text-align:center;padding:24px;font-size:13.5px;line-height:1.5;}
+  .video-placeholder .play{width:52px;height:52px;border-radius:50%;background:var(--amber);margin:0 auto 14px;
+    display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--amber-ink);}
+  .timer-note{text-align:center;font-size:13px;color:var(--ink-soft);margin:12px 0 18px;font-family:'IBM Plex Mono',monospace;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;
+    text-transform:uppercase;letter-spacing:.05em;}
+  .field input{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:9px;
+    font-size:16px;font-family:'IBM Plex Sans',sans-serif;background:var(--surface);color:var(--ink);}
+  .field input:focus{outline:none;border-color:var(--amber);}
+  .q{margin-bottom:22px;}
+  .q-title{font-size:15.5px;font-weight:600;margin-bottom:11px;line-height:1.4;}
+  .opt{display:flex;align-items:center;gap:11px;padding:12px 14px;border:1.5px solid var(--line);
+    border-radius:9px;margin-bottom:8px;cursor:pointer;transition:border-color .15s;background:var(--surface);}
+  .opt:hover{border-color:#B9BCB8;}
+  .opt.selected{border-color:var(--ink);background:#F3F3F1;}
+  .opt-mark{width:19px;height:19px;border-radius:50%;border:1.5px solid var(--line);flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;}
+  .opt.selected .opt-mark{border-color:var(--ink);background:var(--ink);}
+  .opt.selected .opt-mark::after{content:"";width:7px;height:7px;border-radius:50%;background:#fff;}
+  .opt-text{font-size:14.5px;line-height:1.4;}
+  .result-row{display:flex;gap:11px;padding:14px;border-radius:10px;margin-bottom:10px;}
+  .result-row.ok{background:var(--green-soft);}
+  .result-row.bad{background:var(--red-soft);}
+  .result-icon{font-weight:700;font-size:15px;flex-shrink:0;}
+  .result-row.ok .result-icon{color:var(--green);}
+  .result-row.bad .result-icon{color:var(--red);}
+  .result-text{font-size:13.5px;line-height:1.45;}
+  .result-text b{display:block;margin-bottom:2px;}
+  .cert-wrap{background:var(--surface);border-radius:var(--radius);padding:4px;margin-bottom:20px;
+    box-shadow:0 1px 3px rgba(0,0,0,.06);}
+  .cert{position:relative;border:1.5px dashed #C7C9C4;border-radius:11px;padding:30px 22px 26px;text-align:center;}
+  .cert::before,.cert::after{content:"";position:absolute;width:22px;height:22px;background:var(--bg);
+    border-radius:50%;top:50%;transform:translateY(-50%);}
+  .cert::before{left:-15px;} .cert::after{right:-15px;}
+  .stamp{width:66px;height:66px;border-radius:50%;border:2.5px solid var(--green);color:var(--green);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 16px;transform:rotate(-9deg);
+    font-family:'Oswald',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.03em;text-align:center;line-height:1.15;}
+  .cert-cat{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--ink-soft);
+    text-transform:uppercase;margin-bottom:4px;}
+  .cert-title{font-family:'Oswald',sans-serif;font-size:21px;font-weight:600;margin-bottom:18px;}
+  .cert-name{font-size:22px;font-weight:700;margin-bottom:2px;}
+  .cert-badge{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ink-soft);margin-bottom:18px;}
+  .cert-divider{height:1px;background:var(--line);margin:0 0 16px;}
+  .cert-meta{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;
+    font-size:11px;color:var(--ink-soft);}
+  .muted{color:var(--ink-soft);font-size:13px;}
+  .admin-toggle{text-align:center;margin-top:26px;}
+  .admin-toggle a{color:var(--ink-soft);font-size:12.5px;text-decoration:underline;cursor:pointer;}
+  .admin-panel{margin-top:14px;border-top:1px solid var(--line);padding-top:14px;}
+  .admin-row{padding:10px 0;border-bottom:1px solid var(--line);font-size:13px;}
+  .admin-row:last-child{border-bottom:none;}
+  @media(prefers-reduced-motion:reduce){*{transition:none !important;}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="brand">BOOZ<span>·</span>CERTIFICACIÓN</div>
+    <div class="stepper" id="stepper"></div>
+  </div>
+  <main id="main"></main>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG — edita esto para crear un módulo nuevo (copia el
+   archivo, cambia lo de aquí abajo, listo).
+   ============================================================ */
+const CONFIG = {
+  moduleId: "onboarding-new-driver-01",
+  category: "Onboarding",
+  titleEs: "Reglas para Nuevos Conductores",
+
+  youtubeId: "8MoQRXToaLM",
+  videoUrl: "",
+  minSecondsBeforeContinue: 10,
+
+  questions: [
+    {
+      q: "Durante toda la jornada (estación, ruta y regreso), ¿qué es obligatorio?",
+      options: [
+        "Chaleco reflectivo azul oficial y calzado adecuado",
+        "Solo el chaleco al bajar de la van",
+        "Uniforme completo solo si hay supervisor cerca",
+        "Ninguno, es opcional"
+      ],
+      correct: 0,
+      explain: "El uniforme va puesto toda la jornada, no solo al bajarte a entregar."
+    },
+    {
+      q: "Si en la inspección (DVIC) notas rayones, golpes o problemas con neumáticos/luces, ¿qué haces?",
+      options: [
+        "Reportarlo a Dispatch antes de mover la unidad",
+        "Anotarlo para el final del día",
+        "Nada, no es tu responsabilidad",
+        "Solo reportarlo si el daño es grande"
+      ],
+      correct: 0,
+      explain: "Reportarlo antes de salir te deslinda de responsabilidad por un daño que no causaste tú."
+    },
+    {
+      q: "¿Qué pasa si llevas un pasajero no autorizado o una mascota en la van?",
+      options: [
+        "Es causal de terminación inmediata",
+        "Se permite si es un familiar",
+        "Solo se amonesta la primera vez",
+        "Depende de si hay espacio en la van"
+      ],
+      correct: 0,
+      explain: "Cero excepciones — pasajeros o mascotas no autorizados terminan el contrato de inmediato."
+    },
+    {
+      q: "Si decides alterar el orden de entrega que marca la app...",
+      options: [
+        "Debes coordinarlo con Dispatch primero",
+        "Puedes hacerlo libremente si crees que es más eficiente",
+        "Solo se permite en la última hora de la ruta",
+        "No importa, la app se ajusta sola"
+      ],
+      correct: 0,
+      explain: "Cambiar la secuencia sin avisar afecta tiempos y telemetría — Dispatch tiene que saberlo."
+    },
+    {
+      q: "¿Quién puede decidir marcar un paquete como \"No Entregado\" y regresarlo a la estación?",
+      options: [
+        "Nadie por cuenta propia — primero se aplica el protocolo de contacto al cliente",
+        "El conductor, a su criterio",
+        "Solo si ya reintentó una vez sin avisar",
+        "Dispatch lo decide sin necesidad de contacto"
+      ],
+      correct: 0,
+      explain: "El protocolo de contacto (llamada + mensaje) es obligatorio antes de cualquier RTS."
+    },
+    {
+      q: "Al terminar los paquetes asignados en tu ruta, ¿qué debes hacer antes de irte?",
+      options: [
+        "Llamar obligatoriamente a Dispatch, por si hay que hacer un rescate",
+        "Irte directo a casa, ya cumpliste",
+        "Solo avisar si vas a llegar tarde",
+        "Nada, tu turno terminó"
+      ],
+      correct: 0,
+      explain: "Terminar tus paquetes no es el fin del turno — el rescate a un compañero es mandatorio si Dispatch lo pide."
+    },
+    {
+      q: "Al devolver la van al final del turno, ¿qué es obligatorio?",
+      options: [
+        "Tanque lleno (con la tarjeta asignada) y cabina limpia, sin basura",
+        "Solo dejarla estacionada donde sea",
+        "Reportar el kilometraje nada más",
+        "Nada, eso lo hace el siguiente turno"
+      ],
+      correct: 0,
+      explain: "La van debe quedar lista para el siguiente turno — combustible y limpieza son parte del cierre."
+    }
+  ],
+
+  googleScriptUrl: ""
+};
+/* ============================================================ */
+
+let STATE = { step:"intro", driver:{name:"",badge:""}, selected:[], certId:null, videoTimer:null };
+const STEPS = ["video","quiz","certificate"];
+const $ = s => document.querySelector(s);
+const esc = s => { const d=document.createElement("div"); d.textContent=s||""; return d.innerHTML; };
+
+function updateStepper(active){
+  const idx = STEPS.indexOf(active);
+  $("#stepper").innerHTML = STEPS.map((s,i)=>{
+    const label = s==="video"?"Video":s==="quiz"?"Cuestionario":"Certificado";
+    const cls = i<idx ? "step done" : i===idx ? "step active" : "step";
+    const track = i < STEPS.length-1 ? '<div class="track"></div>' : "";
+    return `<div class="${cls}"><div class="dot">${i+1}</div><span>${label}</span></div>${track}`;
+  }).join("");
+}
+
+function render(){
+  if (STATE.step==="intro") renderIntro();
+  else if (STATE.step==="video") renderVideo();
+  else if (STATE.step==="quiz") renderQuiz();
+  else if (STATE.step==="result") renderResult();
+  else if (STATE.step==="certificate") renderCertificate();
+  updateStepper(STATE.step==="intro"?"video":STATE.step==="result"?"quiz":STATE.step);
+}
+
+function renderIntro(){
+  $("#main").innerHTML = `
+    <span class="eyebrow">${esc(CONFIG.category.toUpperCase())} · MÓDULO CORTO</span>
+    <h1>${esc(CONFIG.titleEs)}</h1>
+    <p class="lede">Un video corto y ${CONFIG.questions.length} preguntas. Menos de 2 minutos, y queda tu constancia.</p>
+    <button class="btn btn-primary" onclick="goVideo()">Comenzar</button>
+  `;
+}
+
+function goVideo(){ STATE.step="video"; render(); startVideoTimer(); }
+
+function videoEmbed(){
+  if (CONFIG.youtubeId) return `<iframe src="https://www.youtube.com/embed/${CONFIG.youtubeId}?rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  if (CONFIG.videoUrl) return `<video src="${CONFIG.videoUrl}" controls playsinline></video>`;
+  return `<div class="video-placeholder"><div class="play">▶</div>Aquí va tu video (20–60 seg).<br>Configura <b>youtubeId</b> o <b>videoUrl</b> arriba en CONFIG.</div>`;
+}
+
+function renderVideo(){
+  $("#main").innerHTML = `
+    <h1 style="font-size:22px;">${esc(CONFIG.titleEs)}</h1>
+    <div class="video-slot">${videoEmbed()}</div>
+    <div class="timer-note" id="timerNote">Continúa en ${CONFIG.minSecondsBeforeContinue}s…</div>
+    <button class="btn btn-primary" id="continueBtn" disabled onclick="goQuiz()">Ya vi el video, continuar</button>
+  `;
+}
+
+function startVideoTimer(){
+  let left = CONFIG.minSecondsBeforeContinue;
+  clearInterval(STATE.videoTimer);
+  STATE.videoTimer = setInterval(()=>{
+    left--;
+    const note = $("#timerNote"), btn = $("#continueBtn");
+    if (!note || !btn) { clearInterval(STATE.videoTimer); return; }
+    if (left<=0){ note.textContent="Listo."; btn.disabled=false; clearInterval(STATE.videoTimer); }
+    else note.textContent = `Continúa en ${left}s…`;
+  },1000);
+}
+
+function goQuiz(){ STATE.step="quiz"; STATE.selected = new Array(CONFIG.questions.length).fill(null); render(); }
+
+function renderQuiz(){
+  const qHtml = CONFIG.questions.map((q,qi)=>`
+    <div class="q">
+      <div class="q-title">${qi+1}. ${esc(q.q)}</div>
+      ${q.options.map((opt,oi)=>`
+        <div class="opt ${STATE.selected[qi]===oi?'selected':''}" onclick="selectOpt(${qi},${oi})">
+          <div class="opt-mark"></div><div class="opt-text">${esc(opt)}</div>
+        </div>`).join("")}
+    </div>`).join("");
+  $("#main").innerHTML = `
+    <h1 style="font-size:22px;">Antes de tu certificado</h1>
+    <p class="lede">Escribe tu nombre y responde las preguntas.</p>
+    <div class="field"><label>Nombre completo</label>
+      <input id="fName" type="text" placeholder="Tu nombre" value="${esc(STATE.driver.name)}"></div>
+    <div class="field"><label>Badge (opcional)</label>
+      <input id="fBadge" type="text" inputmode="numeric" placeholder="Ej. 4021" value="${esc(STATE.driver.badge)}"></div>
+    ${qHtml}
+    <button class="btn btn-primary" onclick="submitQuiz()">Enviar respuestas</button>
+  `;
+}
+
+function selectOpt(qi,oi){ STATE.selected[qi]=oi; renderQuiz(); }
+
+function submitQuiz(){
+  STATE.driver.name = $("#fName").value.trim();
+  STATE.driver.badge = $("#fBadge").value.trim();
+  if (!STATE.driver.name){ alert("Falta el nombre."); return; }
+  if (STATE.selected.some(s=>s===null)){ alert("Responde todas las preguntas."); return; }
+  STATE.step="result"; render();
+}
+
+function renderResult(){
+  const wrong = CONFIG.questions.map((q,i)=>({q,i})).filter(x=>STATE.selected[x.i]!==x.q.correct);
+  if (wrong.length===0){
+    STATE.step="certificate"; render(); logCompletion(); return;
+  }
+  const rows = CONFIG.questions.map((q,i)=>{
+    const ok = STATE.selected[i]===q.correct;
+    return `<div class="result-row ${ok?'ok':'bad'}">
+      <div class="result-icon">${ok?'✓':'✕'}</div>
+      <div class="result-text"><b>${esc(q.q)}</b>${ok?'Correcto.':'Correcto: '+esc(q.options[q.correct])+' — '+esc(q.explain)}</div>
+    </div>`;
+  }).join("");
+  $("#main").innerHTML = `
+    <h1 style="font-size:22px;">Revisa esto antes de certificarte</h1>
+    <p class="lede">${wrong.length} de ${CONFIG.questions.length} para repasar.</p>
+    ${rows}
+    <button class="btn btn-primary" onclick="goQuiz()">Reintentar cuestionario</button>
+  `;
+}
+
+function genCertId(){
+  return "SFT-"+Date.now().toString(36).toUpperCase();
+}
+
+function renderCertificate(){
+  if (!STATE.certId) STATE.certId = genCertId();
+  const date = new Date().toLocaleDateString("es-US",{year:"numeric",month:"2-digit",day:"2-digit"});
+  $("#main").innerHTML = `
+    <h1 style="font-size:22px;">Certificado emitido</h1>
+    <div class="cert-wrap">
+      <div class="cert" id="certificateCard">
+        <div class="stamp">BOOZ<br>APROBADO</div>
+        <div class="cert-cat">${esc(CONFIG.category)} · Constancia de capacitación</div>
+        <div class="cert-title">${esc(CONFIG.titleEs)}</div>
+        <div class="cert-name">${esc(STATE.driver.name)}</div>
+        ${STATE.driver.badge?`<div class="cert-badge">Badge #${esc(STATE.driver.badge)}</div>`:'<div class="cert-badge">&nbsp;</div>'}
+        <div class="cert-divider"></div>
+        <div class="cert-meta"><span>${date}</span><span>${STATE.certId}</span></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="downloadCertificate()">Descargar certificado</button>
+    <div class="admin-toggle"><a onclick="toggleAdmin()">Ver registros (prueba)</a></div>
+    <div id="adminPanel"></div>
+  `;
+}
+
+async function downloadCertificate(){
+  const node = $("#certificateCard");
+  const canvas = await html2canvas(node,{scale:2,backgroundColor:"#FFFFFF"});
+  const a = document.createElement("a");
+  a.download = `certificado_${STATE.certId}.png`;
+  a.href = canvas.toDataURL("image/png");
+  a.click();
+}
+
+async function logCompletion(){
+  const record = {
+    id: STATE.certId || genCertId(),
+    module: CONFIG.titleEs,
+    category: CONFIG.category,
+    name: STATE.driver.name,
+    badge: STATE.driver.badge,
+    date: new Date().toLocaleDateString("es-US"),
+    ts: Date.now()
+  };
+  STATE.certId = record.id;
+  if (CONFIG.googleScriptUrl){
+    try{
+      await fetch(CONFIG.googleScriptUrl,{method:"POST",mode:"no-cors",
+        headers:{"Content-Type":"text/plain"},body:JSON.stringify(record)});
+    }catch(e){ console.warn("No se pudo enviar a Google Sheets:",e); }
+  }
+  if (window.storage){
+    try{ await window.storage.set(`completion_${record.id}`, JSON.stringify(record), true); }
+    catch(e){ console.warn("No se pudo guardar en window.storage:",e); }
+  }
+}
+
+let adminOpen = false;
+async function toggleAdmin(){
+  adminOpen = !adminOpen;
+  const panel = $("#adminPanel");
+  if (!adminOpen){ panel.innerHTML=""; return; }
+  panel.innerHTML = `<div class="admin-panel"><p class="muted">Cargando…</p></div>`;
+  if (!window.storage){
+    panel.innerHTML = `<div class="admin-panel"><p class="muted">No disponible fuera de Claude — conecta Google Apps Script para esto en producción.</p></div>`;
+    return;
+  }
+  try{
+    const list = await window.storage.list("completion_", true);
+    if (!list || !list.keys || list.keys.length===0){
+      panel.innerHTML = `<div class="admin-panel"><p class="muted">Sin registros todavía.</p></div>`;
+      return;
+    }
+    const rows = await Promise.all(list.keys.map(async k=>{
+      try{ const r = await window.storage.get(k,true); return JSON.parse(r.value); }
+      catch(e){ return null; }
+    }));
+    const valid = rows.filter(Boolean).sort((a,b)=>b.ts-a.ts);
+    panel.innerHTML = `<div class="admin-panel">` + valid.map(r=>`
+      <div class="admin-row"><strong>${esc(r.name)}</strong> ${r.badge?'· #'+esc(r.badge):''}<br>
+      <span class="muted">${esc(r.module)} · ${esc(r.date)} · ${esc(r.id)}</span></div>
+    `).join("") + `</div>`;
+  }catch(e){
+    panel.innerHTML = `<div class="admin-panel"><p class="muted">Error al cargar registros.</p></div>`;
+  }
+}
+
+render();
+</script>
+
+<!-- ============================================================
+GOOGLE APPS SCRIPT — para que los registros lleguen a un Google
+Sheet una vez que esto viva fuera de Claude (window.storage de
+arriba solo funciona dentro de la vista previa de Claude).
+
+1. Crea un Google Sheet nuevo. Extensiones → Apps Script.
+2. Pega esto y reemplaza SHEET_NAME si quieres:
+
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([data.ts, data.date, data.name, data.badge, data.module, data.category, data.id]);
+  return ContentService.createTextOutput("ok");
+}
+
+3. Implementar → Nueva implementación → Aplicación web →
+   Ejecutar como: yo · Quién tiene acceso: Cualquier usuario.
+4. Copia la URL que te da y pégala arriba en CONFIG.googleScriptUrl.
+============================================================ -->
+</body>
+</html>

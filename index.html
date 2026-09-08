@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>BOOZ · Módulos de Certificación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EDEEEC; --surface:#FFFFFF; --ink:#1A1D1F; --ink-soft:#5B6066;
+    --amber:#F5A623; --amber-ink:#4A3300; --green:#0B5D3B; --green-soft:#E4F0EA;
+    --line:#D8DAD6; --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:'IBM Plex Sans',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
+  .app{max-width:480px;margin:0 auto;min-height:100vh;}
+  .topbar{padding:18px 20px 16px;border-bottom:1px solid var(--line);background:var(--surface);}
+  .brand{font-family:'Oswald',sans-serif;font-weight:700;font-size:15px;letter-spacing:.14em;color:var(--ink);}
+  .brand span{color:var(--amber);}
+  main{padding:26px 20px 40px;}
+  h1{font-family:'Oswald',sans-serif;font-size:26px;line-height:1.1;margin:0 0 6px;font-weight:600;}
+  .lede{color:var(--ink-soft);font-size:14.5px;line-height:1.5;margin:0 0 24px;}
+  .list{display:flex;flex-direction:column;gap:12px;}
+  a.card{display:block;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 18px;text-decoration:none;color:var(--ink);position:relative;transition:border-color .15s;}
+  a.card:active{border-color:var(--amber);}
+  .tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.09em;
+    padding:3px 8px;border-radius:4px;font-weight:600;margin-bottom:9px;}
+  .tag.safety{background:var(--amber);color:var(--amber-ink);}
+  .tag.quality{background:var(--green-soft);color:var(--green);}
+  .tag.onboarding{background:#E7E7E4;color:var(--ink-soft);}
+  .card-title{font-size:17px;font-weight:600;margin-bottom:3px;}
+  .card-sub{font-size:13px;color:var(--ink-soft);}
+  .arrow{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar"><div class="brand">BOOZ<span>·</span>CERTIFICACIÓN</div></div>
+  <main>
+    <h1>Módulos de Capacitación</h1>
+    <p class="lede">Elige un módulo. Cada uno es un video corto y unas preguntas — menos de 2 minutos.</p>
+    <div class="list">
+      <a class="card" href="modulo_reglas_nuevos_conductores.html">
+        <span class="tag onboarding">ONBOARDING</span>
+        <div class="card-title">Reglas para Nuevos Conductores</div>
+        <div class="card-sub">Uniforme, DVIC, RTS, rescates y cierre de turno</div>
+        <span class="arrow">›</span>
+      </a>
+      <a class="card" href="modulo_seguridad_volante.html">
+        <span class="tag safety">SAFETY</span>
+        <div class="card-title">Seguridad al Volante</div>
+        <div class="card-sub">Cinturón, distracciones, stops, distancia y velocidad</div>
+        <span class="arrow">›</span>
+      </a>
+      <a class="card" href="modulo_zonas_escolares.html">
+        <span class="tag safety">SAFETY</span>
+        <div class="card-title">Zonas Escolares</div>
+        <div class="card-sub">Límites, autobuses escolares y precaución con peatones</div>
+        <span class="arrow">›</span>
+      </a>
+      <a class="card" href="modulo_entregas_edificios.html">
+        <span class="tag quality">QUALITY</span>
+        <div class="card-title">Entregas en Edificios</div>
+        <div class="card-sub">Accesos, lockers, mailroom y protocolo de bloqueo</div>
+        <span class="arrow">›</span>
+      </a>
+    </div>
+  </main>
+</div>
+</body>
+</html>
