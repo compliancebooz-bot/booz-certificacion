@@ -334,11 +334,16 @@ function submitQuiz(){
   if (STATE.firstAttemptCorrectCount===null){
     STATE.firstAttemptCorrectCount = CONFIG.questions.filter((q,i)=>STATE.selected[i]===q.correct).length;
     // Nota interna (solo para ti, nunca se muestra al driver): en qué
-    // preguntas falló en su primer intento.
-    STATE.firstAttemptWrongNotes = CONFIG.questions
-      .map((q,i)=> STATE.selected[i]!==q.correct ? `Q${i+1}: ${q.q}` : null)
-      .filter(Boolean)
-      .join(" ; ");
+    // número de pregunta falló en su primer intento.
+    const wrongNums = CONFIG.questions
+      .map((q,i)=> STATE.selected[i]!==q.correct ? (i+1) : null)
+      .filter(n => n !== null);
+    if (wrongNums.length === 0){
+      STATE.firstAttemptWrongNotes = "Sin errores";
+    } else {
+      const label = wrongNums.length === 1 ? "la pregunta" : "las preguntas";
+      STATE.firstAttemptWrongNotes = `Falló en el primer intento ${label} ${wrongNums.join(", ")}`;
+    }
   }
   STATE.step="result"; render();
 }
