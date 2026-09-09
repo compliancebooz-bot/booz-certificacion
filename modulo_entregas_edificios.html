@@ -310,7 +310,7 @@ function renderQuiz(){
     <p class="lede">Escribe tu nombre y responde las preguntas.</p>
     <div class="field"><label>Nombre completo</label>
       <input id="fName" type="text" placeholder="Tu nombre" value="${esc(STATE.driver.name)}"></div>
-    <div class="field"><label>Badge (opcional)</label>
+    <div class="field"><label>Badge</label>
       <input id="fBadge" type="text" inputmode="numeric" placeholder="Ej. 4021" value="${esc(STATE.driver.badge)}"></div>
     ${qHtml}
     <button class="btn btn-primary" onclick="submitQuiz()">Enviar respuestas</button>
@@ -331,10 +331,17 @@ function submitQuiz(){
   STATE.driver.name = $("#fName").value.trim();
   STATE.driver.badge = $("#fBadge").value.trim();
   if (!STATE.driver.name){ alert("Falta el nombre."); return; }
+  if (!STATE.driver.badge){ alert("Falta el badge."); return; }
   if (STATE.selected.some(s=>s===null)){ alert("Responde todas las preguntas."); return; }
   STATE.attempts++;
   if (STATE.firstAttemptCorrectCount===null){
     STATE.firstAttemptCorrectCount = CONFIG.questions.filter((q,i)=>STATE.selected[i]===q.correct).length;
+    // Nota interna (solo para ti, nunca se muestra al driver): en qué
+    // preguntas falló en su primer intento.
+    STATE.firstAttemptWrongNotes = CONFIG.questions
+      .map((q,i)=> STATE.selected[i]!==q.correct ? `Q${i+1}: ${q.q}` : null)
+      .filter(Boolean)
+      .join(" ; ");
   }
   STATE.step="result"; render();
 }
@@ -422,12 +429,14 @@ async function logCompletion(){
     firstAttemptPct: pct,
     attempts: STATE.attempts,
     date: dateNoSlash,
+    notes: STATE.firstAttemptWrongNotes || "Sin errores",
     ts: Date.now()
   };
   STATE.certId = record.id;
   if (CONFIG.emailjs.serviceId && CONFIG.emailjs.templateId && window.emailjs){
     const subjectLine = ["CERT", record.company, record.module, record.category,
-      record.name, record.badge, record.firstAttemptPct, record.attempts, record.id, record.date].join("|");
+      record.name, record.badge, record.firstAttemptPct, record.attempts, record.id, record.date,
+      record.notes].join("|");
     try{
       await emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.templateId, {
         subject_line: subjectLine, company: record.company, module: record.module,
