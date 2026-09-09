@@ -430,6 +430,9 @@ async function downloadCertificate(){
 
 async function logCompletion(){
   const pct = Math.round((STATE.firstAttemptCorrectCount / CONFIG.questions.length) * 100);
+  const now = new Date();
+  const dateNoSlash = String(now.getDate()).padStart(2,"0") + "-" +
+    String(now.getMonth()+1).padStart(2,"0") + "-" + now.getFullYear();
   const record = {
     id: STATE.certId || genCertId(),
     company: CONFIG.companyName,
@@ -439,7 +442,7 @@ async function logCompletion(){
     badge: STATE.driver.badge || "-",
     firstAttemptPct: pct,
     attempts: STATE.attempts,
-    date: new Date().toLocaleDateString("es-US"),
+    date: dateNoSlash,
     ts: Date.now()
   };
   STATE.certId = record.id;
