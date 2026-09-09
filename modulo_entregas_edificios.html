@@ -309,9 +309,9 @@ function renderQuiz(){
     <h1 style="font-size:22px;">Antes de tu certificado</h1>
     <p class="lede">Escribe tu nombre y responde las preguntas.</p>
     <div class="field"><label>Nombre completo</label>
-      <input id="fName" type="text" placeholder="Tu nombre" value="${esc(STATE.driver.name)}"></div>
-    <div class="field"><label>Badge</label>
-      <input id="fBadge" type="text" inputmode="numeric" placeholder="Ej. 4021" value="${esc(STATE.driver.badge)}"></div>
+      <input id="fName" type="text" placeholder="Tu nombre" value="${esc(STATE.driver.name)}"
+        autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" name="driver-name-field"
+        readonly onfocus="this.removeAttribute('readonly')"></div>
     ${qHtml}
     <button class="btn btn-primary" onclick="submitQuiz()">Enviar respuestas</button>
   `;
@@ -320,18 +320,15 @@ function renderQuiz(){
 // Guarda lo que ya se había escrito antes de re-pintar la pantalla
 // al elegir una opción — esto es lo que antes borraba el nombre.
 function syncDriverFields(){
-  const fName = $("#fName"), fBadge = $("#fBadge");
+  const fName = $("#fName");
   if (fName) STATE.driver.name = fName.value;
-  if (fBadge) STATE.driver.badge = fBadge.value;
 }
 
 function selectOpt(qi,oi){ syncDriverFields(); STATE.selected[qi]=oi; renderQuiz(); }
 
 function submitQuiz(){
   STATE.driver.name = $("#fName").value.trim();
-  STATE.driver.badge = $("#fBadge").value.trim();
   if (!STATE.driver.name){ alert("Falta el nombre."); return; }
-  if (!STATE.driver.badge){ alert("Falta el badge."); return; }
   if (STATE.selected.some(s=>s===null)){ alert("Responde todas las preguntas."); return; }
   STATE.attempts++;
   if (STATE.firstAttemptCorrectCount===null){
@@ -393,7 +390,6 @@ function renderCertificate(){
           <div class="cert-title">${esc(CONFIG.titleEs)}</div>
           <div class="cert-otorgado">Otorgado a</div>
           <div class="cert-name">${esc(STATE.driver.name)}</div>
-          ${STATE.driver.badge?`<div class="cert-badge">Badge #${esc(STATE.driver.badge)}</div>`:'<div class="cert-badge">&nbsp;</div>'}
           <div class="cert-divider"></div>
           <div class="cert-score">Efectividad: <b>100%</b>${attemptsNote}</div>
           <div class="cert-meta"><span>${date}</span><span>${STATE.certId}</span></div>
