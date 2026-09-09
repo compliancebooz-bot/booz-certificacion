@@ -135,78 +135,100 @@ const CONFIG = {
 
   questions: [
     {
-      q: "¿Cuándo debe estar colocado correctamente el cinturón de seguridad?",
+      q: "¿Cuándo debe estar puesto el cinturón de seguridad?",
       options: [
-        "Después de arrancar",
-        "Antes de encender el motor y poner la van en marcha",
         "Solo en la autopista",
-        "Cuando Netradyne lo indique"
-      ],
-      correct: 1,
-      explain: "El cinturón va puesto antes de encender el motor, no después de arrancar."
-    },
-    {
-      q: "¿Qué pasa si te sientas encima del cinturón o lo pasas por detrás de la espalda?",
-      options: [
-        "No pasa nada si es un trayecto corto",
-        "Solo se detecta si un supervisor lo ve",
-        "Se permite si vas despacio",
-        "Genera una penalización directa"
+        "Solo después de la primera parada",
+        "Solo si vas a más de 20 mph",
+        "Siempre, desde que arrancan hasta que apagan"
       ],
       correct: 3,
-      explain: "Netradyne detecta ese patrón y genera penalización directa, sin importar el trayecto."
+      explain: "El cinturón va puesto todo el tiempo que el vehículo está encendido, no solo en ciertos tramos."
     },
     {
-      q: "Mientras el vehículo está en movimiento, el teléfono debe estar...",
+      q: "¿Qué límite de velocidad debes seguir al manejar?",
       options: [
-        "Siempre en su base (mount), sin tocarlo",
-        "En la mano por si suena",
-        "En el asiento, apagado",
-        "No importa mientras no hables por él"
+        "El de la señal de la calle, no el de la app ni el de la van",
+        "El que indique la app de Flex",
+        "El que traiga programado el GPS de la van",
+        "El promedio de lo que hacen los demás conductores"
       ],
       correct: 0,
-      explain: "El teléfono va en el mount — sostenerlo, tocarlo o mirarlo en movimiento está prohibido."
+      explain: "El límite válido es el de la señal en la vía, no lo que muestre la app o el GPS de la van."
     },
     {
-      q: "Tocar la pantalla del teléfono en un semáforo...",
-      options: [
-        "No cuenta porque el vehículo está detenido",
-        "Está permitido si es rápido",
-        "Sí activa un evento de distracción",
-        "Solo cuenta si el semáforo está en rojo por mucho tiempo"
-      ],
-      correct: 2,
-      explain: "Tocar la pantalla en el semáforo también activa un evento de distracción."
-    },
-    {
-      q: "En una señal de Stop, ¿qué exige el protocolo?",
+      q: "En cada señal de Stop, ¿qué exige la regla?",
       options: [
         "Reducir la velocidad y seguir si no hay tráfico",
-        "Detenerte solo si hay peatones cruzando",
-        "Un rolling stop está bien si vas despacio",
-        "Detenerte por completo (0 mph) antes de la línea o el paso peatonal"
+        "Detenerse solo si hay peatones",
+        "Alto total, con las llantas completamente detenidas",
+        "Un rolling stop está bien si vas despacio"
       ],
-      correct: 3,
-      explain: "Los rolling stops se detectan de inmediato — la parada tiene que ser total."
+      correct: 2,
+      explain: "Alto total significa llantas completamente detenidas, no una reducción de velocidad."
     },
     {
-      q: "¿Qué distancia mínima debes mantener con el vehículo de adelante?",
+      q: "¿Puedes cruzar un semáforo en amarillo?",
       options: [
-        "3 a 4 segundos",
-        "1 segundo",
-        "Lo más cerca posible sin chocar",
-        "Solo importa en autopista"
+        "Sí, si alcanzas a pasar rápido",
+        "No, nunca — ni en rojo ni en amarillo",
+        "Sí, siempre que no haya peatones",
+        "Solo si el semáforo lleva mucho tiempo en amarillo"
+      ],
+      correct: 1,
+      explain: "La regla es no cruzar ni en rojo ni en amarillo, sin excepción."
+    },
+    {
+      q: "¿Cuál es la distancia mínima antes de cambiar de carril?",
+      options: [
+        "3 segundos, en autopistas, avenidas o calles",
+        "1 segundo, solo en autopistas",
+        "No hay un mínimo, basta con usar la señal",
+        "5 segundos, solo en avenidas"
       ],
       correct: 0,
-      explain: "3 a 4 segundos de distancia, en cualquier vía, evita alertas de proximidad y frenazos bruscos."
+      explain: "Mínimo 3 segundos de distancia, sin importar el tipo de vía."
+    },
+    {
+      q: "Mientras manejan, ¿qué está prohibido?",
+      options: [
+        "Escuchar música",
+        "Usar el aire acondicionado",
+        "Hablar con el copiloto",
+        "Tener el celular en la mano y fumar en la van"
+      ],
+      correct: 3,
+      explain: "Celular en la mano y fumar en la van están prohibidos mientras se maneja."
+    },
+    {
+      q: "¿Cuál es el límite de velocidad dentro de la estación?",
+      options: [
+        "5 millas por hora",
+        "10 millas por hora",
+        "15 millas por hora",
+        "20 millas por hora"
+      ],
+      correct: 1,
+      explain: "Dentro de la estación el límite es 10 millas por hora."
+    },
+    {
+      q: "¿Cuál es el límite de velocidad en la zona de carga?",
+      options: [
+        "15 millas por hora",
+        "10 millas por hora",
+        "5 millas por hora",
+        "20 millas por hora"
+      ],
+      correct: 2,
+      explain: "En la zona de carga el límite es más estricto: 5 millas por hora."
     }
   ],
 
   // --- REGISTRO DE COMPLETADOS (correo + Power Automate, sin Google) ---
   emailjs: {
-    serviceId: "",
-    templateId: "",
-    publicKey: ""
+    serviceId: "service_26eezgi",
+    templateId: "template_hb428f7",
+    publicKey: "2cyU7xolLQFEm7999"
   },
 
   // Logo para la marca de agua del certificado (fondo, opacidad baja).

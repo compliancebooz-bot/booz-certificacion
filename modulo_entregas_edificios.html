@@ -135,67 +135,78 @@ const CONFIG = {
 
   questions: [
     {
-      q: "Antes de entrar a un edificio, ¿qué debes revisar en la app?",
+      q: "Antes de subir a entregar en un edificio, ¿qué debes confirmar?",
       options: [
-        "Solo el número de apartamento",
-        "El clima del día",
-        "Códigos de entrada, acceso OneClick o instrucciones del cliente",
-        "Nada, se entra directo"
-      ],
-      correct: 2,
-      explain: "Revisar códigos, OneClick e instrucciones antes de entrar evita vueltas y errores."
-    },
-    {
-      q: "Si el edificio tiene Amazon Locker o casillero asignado, ¿qué debes hacer?",
-      options: [
-        "Usarlo siguiendo los pasos de escaneo en la aplicación",
-        "Evitarlo y entregar en la puerta siempre",
-        "Dejar el paquete afuera del locker",
-        "Usarlo solo si el cliente lo pide"
-      ],
-      correct: 0,
-      explain: "Si hay locker asignado, se usa siguiendo el flujo de escaneo de la app."
-    },
-    {
-      q: "¿Cuándo puedes depositar un paquete en el mailroom?",
-      options: [
-        "Siempre que haya espacio",
-        "Nunca, está prohibido",
-        "Solo si el edificio tiene más de 10 pisos",
-        "Solo si las notas del cliente o la administración lo autorizan expresamente"
-      ],
-      correct: 3,
-      explain: "Sin autorización expresa de las notas o la administración, el mailroom no es válido."
-    },
-    {
-      q: "¿Dónde está prohibido abandonar un paquete?",
-      options: [
-        "En el interior de un casillero",
-        "En el vestíbulo (lobby), recepciones desatendidas o la entrada principal",
-        "En la puerta del apartamento",
-        "En el mailroom autorizado"
+        "Solo el nombre del cliente",
+        "El número de apartamento o unidad",
+        "El color de la puerta",
+        "Nada, se confirma al bajar"
       ],
       correct: 1,
-      explain: "Lobbies abiertos, recepciones desatendidas y la entrada principal son la causa número uno de paquetes perdidos."
+      explain: "Un edificio o piso equivocado cuesta tiempo y genera reclamos — se confirma antes de subir."
     },
     {
-      q: "Si no logras comunicarte con el cliente tras llamar dos veces y enviar un mensaje, ¿qué haces?",
+      q: "Si el edificio tiene intercomunicador, ¿qué debes hacer para entrar?",
       options: [
-        "Contactar a Dispatch antes de continuar con la ruta",
-        "Dejar el paquete en la entrada y continuar",
-        "Intentar una vez más y marcar como no entregado",
-        "Esperar a que alguien salga del edificio"
+        "Seguir a otra persona que esté entrando",
+        "Forzar la puerta si nadie contesta",
+        "Esperar afuera hasta que alguien salga",
+        "Usarlo para pedir acceso"
+      ],
+      correct: 3,
+      explain: "El intercomunicador es para pedir acceso — no para saltárselo siguiendo a alguien."
+    },
+    {
+      q: "¿Está permitido seguir a otra persona para entrar a un edificio sin autorización?",
+      options: [
+        "No, es una violación de seguridad",
+        "Sí, si la persona no dice nada",
+        "Sí, siempre que lleves el uniforme puesto",
+        "Solo si es de noche"
       ],
       correct: 0,
-      explain: "Después de los dos intentos de contacto, el paso obligatorio es llamar a Dispatch."
+      explain: "Entrar detrás de alguien sin autorización es una violación de seguridad del edificio."
+    },
+    {
+      q: "Si el edificio tiene un cuarto de correspondencia o casillero, ¿qué debes hacer?",
+      options: [
+        "Dejar el paquete en el lobby igual",
+        "Usarlo solo si el cliente lo pide",
+        "Usarlo, en vez de dejar el paquete en el lobby o pasillos",
+        "Ignorarlo si está lejos del elevador"
+      ],
+      correct: 2,
+      explain: "Un paquete en el lobby o pasillo lo puede tomar cualquiera — por eso se usa el casillero o cuarto de correspondencia."
+    },
+    {
+      q: "¿Por qué no debes bloquear la puerta del elevador con carritos o paquetes?",
+      options: [
+        "Porque puede dañar el elevador",
+        "Es una regla de seguridad para todos los residentes",
+        "Porque el edificio cobra una multa",
+        "No hay ninguna razón especial"
+      ],
+      correct: 1,
+      explain: "Bloquear el elevador afecta la seguridad de todos los residentes del edificio, no solo la entrega."
+    },
+    {
+      q: "Si no logras acceso al edificio o nadie responde, ¿qué debes hacer?",
+      options: [
+        "Dejar el paquete en la entrada principal sin autorización",
+        "Dejarlo en la calle y continuar",
+        "Regresarlo a la estación sin avisar",
+        "Seguir las instrucciones de tu app o llamar a Dispatch"
+      ],
+      correct: 3,
+      explain: "Sin acceso ni respuesta, el paso correcto es seguir la app o llamar a Dispatch — nunca dejarlo sin autorización."
     }
   ],
 
   // --- REGISTRO DE COMPLETADOS (correo + Power Automate, sin Google) ---
   emailjs: {
-    serviceId: "",
-    templateId: "",
-    publicKey: ""
+    serviceId: "service_26eezgi",
+    templateId: "template_hb428f7",
+    publicKey: "2cyU7xolLQFEm7999"
   },
 
   // Logo para la marca de agua del certificado (fondo, opacidad baja).

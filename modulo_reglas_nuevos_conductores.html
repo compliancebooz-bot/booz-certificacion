@@ -135,89 +135,100 @@ const CONFIG = {
 
   questions: [
     {
-      q: "Si vas a tener una eventualidad y no puedes llegar a tiempo a tu turno, ¿qué debes hacer?",
+      q: "Antes de entregar un paquete, ¿qué debes verificar?",
       options: [
-        "No decir nada, ya se darán cuenta",
-        "Avisar cuando ya estés retrasado",
-        "Notificar a Dispatch con anticipación",
-        "Solo avisar si es un imprevisto grave"
+        "Solo el número de la casa",
+        "Que el nombre y la dirección en tu app coincidan con la etiqueta y el edificio",
+        "El nombre del cliente en redes sociales",
+        "Que el paquete no esté abollado"
       ],
-      correct: 2,
-      explain: "Las ausencias sin aviso no están permitidas — la notificación tiene que ser anticipada."
+      correct: 1,
+      explain: "Comparar nombre y dirección con la etiqueta y el edificio evita entregas en el lugar equivocado."
     },
     {
-      q: "El chaleco reflectivo azul y el calzado adecuado son obligatorios...",
+      q: "Sobre las instrucciones del cliente para la entrega...",
       options: [
-        "Dentro de la estación y durante toda la ruta",
-        "Solo al bajar a entregar",
-        "Solo dentro de la estación",
-        "Solo si hace frío"
-      ],
-      correct: 0,
-      explain: "El uniforme va puesto en todo momento, dentro de la estación y en ruta."
-    },
-    {
-      q: "¿Cuándo debes hacer la inspección vehicular (DVIC)?",
-      options: [
-        "Solo antes de salir",
-        "Solo si algo se ve raro",
-        "Una vez a la semana",
-        "Antes de salir y al regresar de la ruta"
+        "Síguelas siempre, sin excepción",
+        "Ignóralas si te parecen raras",
+        "Solo aplican si el cliente está en casa",
+        "Solo si son seguras; si algo no cuadra, llama antes de entregar"
       ],
       correct: 3,
-      explain: "El DVIC va antes de salir y al regresar — cualquier daño se reporta de inmediato."
+      explain: "Las instrucciones se siguen si son seguras — si algo no cuadra, se llama antes de actuar."
     },
     {
-      q: "¿Qué está prohibido dentro de la van?",
+      q: "¿Cómo debe ser un lugar seguro para dejar el paquete?",
       options: [
-        "Escuchar música",
-        "Fumar, llevar acompañantes/mascotas, o manejar con las puertas abiertas",
-        "Llevar agua para tomar",
-        "Usar aire acondicionado"
-      ],
-      correct: 1,
-      explain: "Fumar, acompañantes/mascotas no autorizados y manejar con puertas abiertas están prohibidos."
-    },
-    {
-      q: "Si no puedes entregar un paquete, ¿qué debes hacer antes de marcarlo como fallido?",
-      options: [
-        "Comunicarte dos veces con el cliente y llamar a Dispatch",
-        "Regresarlo directo a la estación",
-        "Dejarlo en la puerta de todas formas",
-        "Marcarlo fallido y seguir la ruta"
+        "Protegido del clima, no visible desde la calle y sin mucho tránsito",
+        "Lo más cerca posible de la calle",
+        "Donde más rápido puedas dejarlo",
+        "Da igual, mientras esté cerca de la puerta"
       ],
       correct: 0,
-      explain: "El protocolo exige dos comunicaciones con el cliente y llamar a Dispatch antes de marcar cualquier intento fallido."
+      explain: "Un lugar seguro protege el paquete del clima y de la vista desde la calle."
     },
     {
-      q: "Al terminar tus paradas asignadas, ¿qué debes hacer?",
+      q: "¿Puedes usar un buzón del servicio postal (USPS) para dejar un paquete?",
       options: [
-        "Irte directo a casa",
-        "Nada, tu turno terminó",
-        "Llamar a Dispatch para confirmación de salida o apoyar a un compañero",
-        "Avisar solo si vas a llegar tarde a otro lado"
+        "Sí, si no hay otro lugar",
+        "Sí, siempre que el buzón esté vacío",
+        "No, es una violación federal",
+        "Solo en apartamentos, no en casas"
       ],
       correct: 2,
-      explain: "Terminar tus paradas no es el fin del turno — hay que llamar a Dispatch antes de irte."
+      explain: "Usar un buzón de USPS para un paquete que no es de ellos es una violación federal, sin excepción."
     },
     {
-      q: "Al terminar tu día, ¿qué debes hacer con la van?",
+      q: "¿Puedes marcar un paquete como entregado a un miembro del hogar si en realidad no fue así?",
       options: [
-        "Dejarla donde sea, eso lo hace el siguiente turno",
-        "Dejarla limpia, botar la basura y cargar combustible",
-        "Solo reportar el kilometraje",
-        "Nada, ya cumpliste tu turno"
+        "Sí, si el paquete quedó en la puerta",
+        "No, nunca — se usa el código de escaneo correcto según lo que realmente pasó",
+        "Sí, si el cliente lo autorizó por mensaje",
+        "Solo si es la segunda vez que entregas ahí"
       ],
       correct: 1,
-      explain: "La van se entrega limpia, sin basura y con el tanque cargado, lista para el siguiente turno."
+      explain: "El código de escaneo debe reflejar lo que realmente ocurrió, nunca algo distinto."
+    },
+    {
+      q: "¿Cómo debe ser la foto de entrega (POD)?",
+      options: [
+        "No hace falta que se vea el paquete completo",
+        "Puede ser borrosa si el paquete se ve",
+        "Solo importa que se vea la casa",
+        "Clara, y que muestre dónde quedó el paquete"
+      ],
+      correct: 3,
+      explain: "La foto debe ser clara y mostrar exactamente dónde quedó el paquete."
+    },
+    {
+      q: "Si tienes dudas sobre dónde dejar un paquete, ¿qué debes hacer?",
+      options: [
+        "Llamar primero al cliente o a Dispatch, antes de dejarlo en un lugar incierto",
+        "Dejarlo donde te parezca mejor y seguir",
+        "Regresarlo a la estación sin avisar",
+        "Esperar a que el cliente salga"
+      ],
+      correct: 0,
+      explain: "Ante la duda, se llama primero — nunca se deja el paquete en un lugar incierto por costumbre."
+    },
+    {
+      q: "El comportamiento profesional en ruta incluye...",
+      options: [
+        "Uniforme solo si hace calor",
+        "Música al volumen que quieras",
+        "Uniforme completo, música baja y respeto por la propiedad del cliente",
+        "Nada en particular, solo entregar rápido"
+      ],
+      correct: 2,
+      explain: "Uniforme completo, música baja y respeto por la propiedad son parte del comportamiento profesional esperado."
     }
   ],
 
   // --- REGISTRO DE COMPLETADOS (correo + Power Automate, sin Google) ---
   emailjs: {
-    serviceId: "",
-    templateId: "",
-    publicKey: ""
+    serviceId: "service_26eezgi",
+    templateId: "template_hb428f7",
+    publicKey: "2cyU7xolLQFEm7999"
   },
 
   // Logo para la marca de agua del certificado (fondo, opacidad baja).

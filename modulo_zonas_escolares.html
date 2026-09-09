@@ -135,67 +135,67 @@ const CONFIG = {
 
   questions: [
     {
-      q: "Al ver las luces amarillas parpadeando en una zona escolar, ¿qué debes hacer?",
+      q: "En una zona escolar, ¿cuándo debes reducir la velocidad?",
       options: [
-        "Mantener el límite normal de la vía",
-        "Solo bajar la velocidad si ves niños",
-        "Ignorarlo si vas dentro del horario escolar",
-        "Reducir de inmediato la velocidad al límite indicado (15-20 mph)"
-      ],
-      correct: 3,
-      explain: "Las luces parpadeando exigen reducir de inmediato, sin esperar a ver niños."
-    },
-    {
-      q: "Un exceso de velocidad en zona escolar se considera...",
-      options: [
-        "Una falta menor sin consecuencias",
-        "Una infracción crítica que puede causar suspensión permanente de tu cuenta",
-        "Algo que solo afecta si se repite varias veces",
-        "Algo que no afecta tu cuenta de conductor"
-      ],
-      correct: 1,
-      explain: "Es infracción Tier 1 desde la primera vez — riesgo real de perder la cuenta."
-    },
-    {
-      q: "Si un autobús escolar enciende luces rojas intermitentes y despliega el brazo de STOP...",
-      options: [
-        "Debes detenerte por completo en ambos sentidos, salvo división física de concreto",
-        "Solo se detienen los carros detrás del bus",
-        "Puedes rebasarlo despacio",
-        "Solo aplica si vas en la misma dirección"
-      ],
-      correct: 0,
-      explain: "Aplica en ambos sentidos de la vía, salvo que haya una división física de concreto de por medio."
-    },
-    {
-      q: "¿Está permitido rebasar a un autobús escolar con las luces rojas activadas?",
-      options: [
-        "Sí, si vas despacio",
-        "Sí, si no hay niños cerca",
-        "No, está prohibido",
-        "Sí, si es en sentido contrario"
+        "Solo si ves niños cerca",
+        "Solo en horario de entrada y salida",
+        "Siempre, incluso si no ves niños en el momento",
+        "Solo si hay un cartel visible"
       ],
       correct: 2,
-      explain: "Rebasar un autobús escolar con luces rojas activas está prohibido, sin excepciones."
+      explain: "Los límites en zona escolar aplican siempre, aunque no veas niños en ese momento."
     },
     {
-      q: "¿Por qué debes reducir la marcha y mantener la vista en aceras y cruces en zona escolar?",
+      q: "¿Puedes detenerte brevemente en una zona de carga y descarga de estudiantes?",
       options: [
-        "Porque hay más tráfico a esa hora",
-        "Porque los niños pueden salir inesperadamente entre los autos estacionados",
-        "Porque las cámaras solo funcionan a baja velocidad",
-        "Es solo una recomendación, no obligatorio"
+        "No, esas áreas deben estar libres en todo momento",
+        "Sí, si es menos de un minuto",
+        "Sí, si pones las luces intermitentes",
+        "Solo está prohibido en la mañana"
+      ],
+      correct: 0,
+      explain: "Esas zonas deben quedar libres siempre, sin importar cuánto tiempo sea."
+    },
+    {
+      q: "Ante cruces peatonales cerca de una escuela, ¿qué actitud debes tener?",
+      options: [
+        "Reaccionar solo cuando el niño ya está cruzando",
+        "No es necesario, los niños siempre miran antes de cruzar",
+        "Solo prestar atención si hay un cruce marcado",
+        "Anticipar, no reaccionar — los niños pueden cruzar sin mirar"
+      ],
+      correct: 3,
+      explain: "La regla es anticipar antes de que pase algo, no reaccionar cuando ya está pasando."
+    },
+    {
+      q: "Si un autobús escolar tiene las luces rojas encendidas y el brazo de alto extendido...",
+      options: [
+        "Puedes pasar despacio si no hay niños bajando",
+        "Debes detenerte por completo, es la ley, sin excepciones",
+        "Solo se detienen los carros en el mismo sentido",
+        "Puedes rebasarlo si vas por el otro carril"
       ],
       correct: 1,
-      explain: "Los niños pueden aparecer de repente entre autos estacionados — por eso la atención extra."
+      explain: "Es ley detenerse por completo, sin excepciones, cuando el autobús tiene luces y brazo activados."
+    },
+    {
+      q: "Si necesitas hacer una entrega cerca de una escuela, ¿cómo debes estacionar?",
+      options: [
+        "Bien estacionado, nunca en doble fila ni bloqueando el paso",
+        "En doble fila, si es rápido",
+        "Donde sea, cerca de la escuela siempre hay espacio",
+        "Bloqueando el paso está bien si pones las luces intermitentes"
+      ],
+      correct: 0,
+      explain: "Nunca en doble fila ni bloqueando el paso, ni siquiera por poco tiempo."
     }
   ],
 
   // --- REGISTRO DE COMPLETADOS (correo + Power Automate, sin Google) ---
   emailjs: {
-    serviceId: "",
-    templateId: "",
-    publicKey: ""
+    serviceId: "service_26eezgi",
+    templateId: "template_hb428f7",
+    publicKey: "2cyU7xolLQFEm7999"
   },
 
   // Logo para la marca de agua del certificado (fondo, opacidad baja).
