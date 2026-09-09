@@ -450,6 +450,10 @@ async function logCompletion(){
     ts: Date.now()
   };
   STATE.certId = record.id;
+  // Marca este módulo como completado en ESTE navegador/teléfono,
+  // para que el índice le muestre un check al driver. No se comparte
+  // con nadie más — vive solo en este dispositivo.
+  try{ localStorage.setItem("completed_" + CONFIG.moduleId, "1"); }catch(e){}
   if (CONFIG.emailjs.serviceId && CONFIG.emailjs.templateId && window.emailjs){
     const subjectLine = ["CERT", record.company, record.module, record.category,
       record.name, record.badge, record.firstAttemptPct, record.attempts, record.id, record.date,

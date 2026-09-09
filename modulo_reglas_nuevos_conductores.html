@@ -238,7 +238,7 @@ const CONFIG = {
 };
 /* ============================================================ */
 
-let STATE = { step:"intro", driver:{name:"",badge:""}, selected:[], certId:null, videoTimer:null, attempts:0, firstAttemptCorrectCount:null };
+let STATE = { step:"intro", driver:{name:"",badge:""}, selected:[], certId:null, videoTimer:null, attempts:0, firstAttemptCorrectCount:null, attemptNotes:[] };
 const STEPS = ["video","quiz","certificate"];
 const $ = s => document.querySelector(s);
 const esc = s => { const d=document.createElement("div"); d.textContent=s||""; return d.innerHTML; };
@@ -353,20 +353,18 @@ function submitQuiz(){
   if (!STATE.driver.name){ alert("Falta el nombre."); return; }
   if (STATE.selected.some(s=>s===null)){ alert("Responde todas las preguntas."); return; }
   STATE.attempts++;
+  // Nota interna (solo para ti, nunca se muestra al driver): en qué
+  // número de pregunta falló, en CADA intento (no solo el primero).
+  const wrongNums = CONFIG.questions
+    .map((q,i)=> STATE.selected[i]!==q.correct ? (i+1) : null)
+    .filter(n => n !== null);
   if (STATE.firstAttemptCorrectCount===null){
-    STATE.firstAttemptCorrectCount = CONFIG.questions.filter((q,i)=>STATE.selected[i]===q.correct).length;
-    // Nota interna (solo para ti, nunca se muestra al driver): en qué
-    // número de pregunta falló en su primer intento.
-    const wrongNums = CONFIG.questions
-      .map((q,i)=> STATE.selected[i]!==q.correct ? (i+1) : null)
-      .filter(n => n !== null);
-    if (wrongNums.length === 0){
-      STATE.firstAttemptWrongNotes = "Sin errores";
-    } else {
-      const label = wrongNums.length === 1 ? "la pregunta" : "las preguntas";
-      STATE.firstAttemptWrongNotes = `Falló en el primer intento ${label} ${wrongNums.join(", ")}`;
-    }
+    STATE.firstAttemptCorrectCount = CONFIG.questions.length - wrongNums.length;
   }
+  const attemptLabel = wrongNums.length === 0
+    ? "sin errores"
+    : (wrongNums.length === 1 ? `falló la pregunta ${wrongNums[0]}` : `falló las preguntas ${wrongNums.join(", ")}`);
+  STATE.attemptNotes.push(`Intento ${STATE.attempts}: ${attemptLabel}`);
   STATE.step="result"; render();
 }
 
@@ -452,10 +450,14 @@ async function logCompletion(){
     firstAttemptPct: pct,
     attempts: STATE.attempts,
     date: dateNoSlash,
-    notes: STATE.firstAttemptWrongNotes || "Sin errores",
+    notes: STATE.attemptNotes.join(" / "),
     ts: Date.now()
   };
   STATE.certId = record.id;
+  // Marca este módulo como completado en ESTE navegador/teléfono,
+  // para que el índice le muestre un check al driver. No se comparte
+  // con nadie más — vive solo en este dispositivo.
+  try{ localStorage.setItem("completed_" + CONFIG.moduleId, "1"); }catch(e){}
   if (CONFIG.emailjs.serviceId && CONFIG.emailjs.templateId && window.emailjs){
     const subjectLine = ["CERT", record.company, record.module, record.category,
       record.name, record.badge, record.firstAttemptPct, record.attempts, record.id, record.date,
