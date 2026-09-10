@@ -269,12 +269,21 @@ function updateStepper(active){
 }
 
 function render(){
+  if (STATE.step==="alreadyDone"){ renderAlreadyDone(); $("#stepper").innerHTML=""; return; }
   if (STATE.step==="intro") renderIntro();
   else if (STATE.step==="video") renderVideo();
   else if (STATE.step==="quiz") renderQuiz();
   else if (STATE.step==="result") renderResult();
   else if (STATE.step==="certificate") renderCertificate();
   updateStepper(STATE.step==="intro"?"video":STATE.step==="result"?"quiz":STATE.step);
+}
+
+function renderAlreadyDone(){
+  $("#main").innerHTML = `
+    <h1 style="font-size:22px;">Ya completaste este módulo</h1>
+    <p class="lede">Tu certificado ya quedó registrado. Si necesitas verlo de nuevo, contacta a Compliance.</p>
+    <a class="btn btn-primary" href="index.html" style="display:block;text-decoration:none;box-sizing:border-box;">Volver al inicio</a>
+  `;
 }
 
 function renderIntro(){
@@ -450,7 +459,7 @@ async function logCompletion(){
     firstAttemptPct: pct,
     attempts: STATE.attempts,
     date: dateNoSlash,
-    notes: STATE.attemptNotes.join(" / "),
+    notes: STATE.attemptNotes.join(" ; "),
     ts: Date.now()
   };
   STATE.certId = record.id;
@@ -472,6 +481,9 @@ async function logCompletion(){
   }
 }
 
+try{
+  if (localStorage.getItem("completed_" + CONFIG.moduleId)){ STATE.step = "alreadyDone"; }
+}catch(e){}
 render();
 </script>
 
