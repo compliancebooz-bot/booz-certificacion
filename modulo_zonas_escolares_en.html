@@ -125,11 +125,12 @@
    ============================================================ */
 const CONFIG = {
   companyName: "BOOZ",
+  subjectPrefix: "CERT", // Cambialo (ej. "CERTDFT4") para otra estacion/empresa sin tocar el flujo actual
   moduleId: "safety-school-zone-01-en",
   category: "Safety",
   titleEs: "School Zones",
 
-  youtubeId: "XZJex-1rIDl",
+  youtubeId: "XZJex-1rIDI",
   videoUrl: "",
   minSecondsBeforeContinue: 60,
 
@@ -431,7 +432,7 @@ async function logCompletion(){
   // con nadie más — vive solo en este dispositivo.
   try{ localStorage.setItem("completed_" + CONFIG.moduleId, "1"); }catch(e){}
   if (CONFIG.emailjs.serviceId && CONFIG.emailjs.templateId && window.emailjs){
-    const subjectLine = ["CERT", record.company, record.module, record.category,
+    const subjectLine = [CONFIG.subjectPrefix, record.company, record.module, record.category,
       record.name, record.badge, record.firstAttemptPct, record.attempts, record.id, record.date,
       record.notes].join("|");
     try{
