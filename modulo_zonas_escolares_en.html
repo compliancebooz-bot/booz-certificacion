@@ -243,10 +243,12 @@ function render(){
 }
 
 function renderAlreadyDone(){
+  // Modo repaso: módulo ya completado. Solo video, sin conteo, sin examen y sin enviar nada.
   $("#main").innerHTML = `
     <h1 style="font-size:22px;">You already completed this module</h1>
-    <p class="lede">Your certificate is already on record. If you need to see it again, contact Compliance.</p>
-    <a class="btn btn-primary" href="index.html" style="display:block;text-decoration:none;box-sizing:border-box;">Back to home</a>
+    <p class="lede">Your certificate is already on record. You can watch the video again as many times as you want. No need to retake the quiz.</p>
+    <div class="video-slot">${videoEmbed()}</div>
+    <a class="btn btn-primary" href="index.html" style="display:block;text-decoration:none;box-sizing:border-box;margin-top:14px;">Back to home</a>
   `;
 }
 
@@ -262,9 +264,16 @@ function renderIntro(){
 
 function goVideo(){ STATE.step="video"; render(); startVideoTimer(); }
 
+const VIDEO_LBL = { start:"Press ▶ on the video to start the countdown", left:t=>`Continue in ${t}…`, paused:t=>`Paused · ${t} left`, ready:"Ready." };
+
+function fmtT(s){ s = Math.max(0, Math.ceil(s)); return Math.floor(s/60) + ":" + String(s%60).padStart(2,"0"); }
+
 function videoEmbed(){
-  if (CONFIG.youtubeId) return `<iframe src="https://www.youtube.com/embed/${CONFIG.youtubeId}?rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-  if (CONFIG.videoUrl) return `<video src="${CONFIG.videoUrl}" controls playsinline></video>`;
+  if (CONFIG.youtubeId){
+    const o = (location.origin && location.origin !== "null") ? "&origin=" + encodeURIComponent(location.origin) : "";
+    return `<iframe id="ytPlayer" src="https://www.youtube.com/embed/${CONFIG.youtubeId}?rel=0&enablejsapi=1&playsinline=1${o}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  }
+  if (CONFIG.videoUrl) return `<video id="vidEl" src="${CONFIG.videoUrl}" controls playsinline></video>`;
   return `<div class="video-placeholder"><div class="play">▶</div>Your video goes here (20–60 sec).<br>Set <b>youtubeId</b> or <b>videoUrl</b> above in CONFIG.</div>`;
 }
 
@@ -272,21 +281,83 @@ function renderVideo(){
   $("#main").innerHTML = `
     <h1 style="font-size:22px;">${esc(CONFIG.titleEs)}</h1>
     <div class="video-slot">${videoEmbed()}</div>
-    <div class="timer-note" id="timerNote">Continue in ${CONFIG.minSecondsBeforeContinue}s…</div>
+    <div class="timer-note" id="timerNote">${VIDEO_LBL.start}</div>
     <button class="btn btn-primary" id="continueBtn" disabled onclick="goQuiz()">I watched the video, continue</button>
   `;
 }
 
 function startVideoTimer(){
-  let left = CONFIG.minSecondsBeforeContinue;
+  // El conteo corre SOLO mientras el video se está reproduciendo y dura lo que dura el video.
+  // Si el driver pausa, el conteo se pausa. Si la API de YouTube no carga, se usa el tiempo fijo de CONFIG.
   clearInterval(STATE.videoTimer);
-  STATE.videoTimer = setInterval(()=>{
-    left--;
-    const note = $("#timerNote"), btn = $("#continueBtn");
-    if (!note || !btn) { clearInterval(STATE.videoTimer); return; }
-    if (left<=0){ note.textContent="Ready."; btn.disabled=false; clearInterval(STATE.videoTimer); }
-    else note.textContent = `Continue in ${left}s…`;
-  },1000);
+  const T = { watched:0, required:null, playing:false, started:false, ready:false, unlocked:false, player:null };
+  const note = () => $("#timerNote"), btn = () => $("#continueBtn");
+  const alive = () => !!(note() && btn());
+  const show = () => {
+    if (!alive()) return;
+    if (T.unlocked) { note().textContent = VIDEO_LBL.ready; return; }
+    if (T.required === null || !T.started) { note().textContent = VIDEO_LBL.start; return; }
+    const left = fmtT(T.required - T.watched);
+    note().textContent = T.playing ? VIDEO_LBL.left(left) : VIDEO_LBL.paused(left);
+  };
+  const unlock = () => { T.unlocked = true; T.playing = false; clearInterval(STATE.videoTimer); if (alive()) btn().disabled = false; show(); };
+  const setDuration = d => { if (d && d > 1 && T.required === null) T.required = Math.max(1, Math.floor(d) - 1); show(); };
+  const setPlaying = p => { if (p) T.started = true; T.playing = p; show(); };
+  const onEnded = () => { setPlaying(false); if (T.required !== null && T.watched >= T.required - 2) unlock(); };
+  const startFallback = () => { if (T.unlocked || T.ready) return; T.required = CONFIG.minSecondsBeforeContinue; T.started = true; T.playing = true; show(); };
+
+  STATE.videoTimer = setInterval(() => {
+    if (!alive()) { clearInterval(STATE.videoTimer); return; }
+    if (T.unlocked) return;
+    if (T.playing && T.required !== null) {
+      let rate = 1;
+      try { if (T.player && T.player.getPlaybackRate) rate = T.player.getPlaybackRate() || 1; } catch(e){}
+      T.watched += rate;
+      if (T.watched >= T.required) { unlock(); return; }
+    }
+    show();
+  }, 1000);
+
+  const vid = $("#vidEl");
+  if (CONFIG.youtubeId) {
+    const attach = () => {
+      try {
+        T.player = new YT.Player("ytPlayer", { events: {
+          onReady: () => {
+            T.ready = true;
+            try { setDuration(T.player.getDuration()); if (T.player.getPlayerState() === 1) setPlaying(true); } catch(e){}
+          },
+          onStateChange: ev => {
+            const s = ev.data;
+            if (s === 1) { try { setDuration(T.player.getDuration()); } catch(e){} setPlaying(true); }
+            else if (s === 0) onEnded();
+            else setPlaying(false);
+          }
+        }});
+      } catch(e){ startFallback(); }
+    };
+    if (window.YT && YT.Player) attach();
+    else {
+      const prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => { try { if (prev) prev(); } catch(e){} attach(); };
+      if (!document.getElementById("ytApi")) {
+        const s = document.createElement("script");
+        s.id = "ytApi"; s.src = "https://www.youtube.com/iframe_api";
+        s.onerror = startFallback;
+        document.head.appendChild(s);
+      }
+    }
+    setTimeout(startFallback, 10000);
+  } else if (vid) {
+    T.ready = true; T.player = { getPlaybackRate: () => vid.playbackRate };
+    vid.addEventListener("loadedmetadata", () => setDuration(vid.duration));
+    vid.addEventListener("playing", () => { setDuration(vid.duration); setPlaying(true); });
+    vid.addEventListener("pause", () => setPlaying(false));
+    vid.addEventListener("waiting", () => setPlaying(false));
+    vid.addEventListener("ended", onEnded);
+  } else {
+    startFallback();
+  }
 }
 
 function goQuiz(){ STATE.step="quiz"; if(STATE.selected.length===0) STATE.selected = new Array(CONFIG.questions.length).fill(null); render(); }
